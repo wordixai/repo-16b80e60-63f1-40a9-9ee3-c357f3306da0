@@ -36,14 +36,14 @@ export function PetDialog({ open, onOpenChange, onSave, pet }: PetDialogProps) {
     gender: 'male',
     color: '',
     weight: 0,
-    imageUrl: '',
-    medicalNotes: '',
-    lastVaccination: '',
+    image_url: '',
+    medical_notes: '',
+    last_vaccination: '',
   });
 
   useEffect(() => {
     if (pet) {
-      const { id, createdAt, ...petData } = pet;
+      const { id, user_id, created_at, updated_at, ...petData } = pet;
       setFormData(petData);
     } else {
       setFormData({
@@ -54,9 +54,9 @@ export function PetDialog({ open, onOpenChange, onSave, pet }: PetDialogProps) {
         gender: 'male',
         color: '',
         weight: 0,
-        imageUrl: '',
-        medicalNotes: '',
-        lastVaccination: '',
+        image_url: '',
+        medical_notes: '',
+        last_vaccination: '',
       });
     }
   }, [pet, open]);
@@ -171,34 +171,34 @@ export function PetDialog({ open, onOpenChange, onSave, pet }: PetDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="imageUrl">Image URL</Label>
+            <Label htmlFor="image_url">Image URL</Label>
             <Input
-              id="imageUrl"
+              id="image_url"
               type="url"
               placeholder="https://example.com/pet-image.jpg"
-              value={formData.imageUrl}
-              onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+              value={formData.image_url}
+              onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="lastVaccination">Last Vaccination Date</Label>
+            <Label htmlFor="last_vaccination">Last Vaccination Date</Label>
             <Input
-              id="lastVaccination"
+              id="last_vaccination"
               type="date"
-              value={formData.lastVaccination}
-              onChange={(e) => setFormData({ ...formData, lastVaccination: e.target.value })}
+              value={formData.last_vaccination}
+              onChange={(e) => setFormData({ ...formData, last_vaccination: e.target.value })}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="medicalNotes">Medical Notes</Label>
+            <Label htmlFor="medical_notes">Medical Notes</Label>
             <Textarea
-              id="medicalNotes"
+              id="medical_notes"
               rows={3}
               placeholder="Any medical conditions, allergies, or special care instructions..."
-              value={formData.medicalNotes}
-              onChange={(e) => setFormData({ ...formData, medicalNotes: e.target.value })}
+              value={formData.medical_notes}
+              onChange={(e) => setFormData({ ...formData, medical_notes: e.target.value })}
             />
           </div>
 

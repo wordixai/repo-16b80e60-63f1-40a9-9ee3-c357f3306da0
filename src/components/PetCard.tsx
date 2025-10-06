@@ -14,8 +14,8 @@ export function PetCard({ pet, onEdit, onDelete }: PetCardProps) {
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
-        {pet.imageUrl ? (
-          <img src={pet.imageUrl} alt={pet.name} className="w-full h-full object-cover" />
+        {pet.image_url ? (
+          <img src={pet.image_url} alt={pet.name} className="w-full h-full object-cover" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-6xl">
             {pet.species === 'dog' ? '🐕' : pet.species === 'cat' ? '🐈' : '🐾'}
@@ -35,10 +35,10 @@ export function PetCard({ pet, onEdit, onDelete }: PetCardProps) {
             <Weight className="w-4 h-4" />
             <span>{pet.weight}kg</span>
           </div>
-          {pet.lastVaccination && (
+          {pet.last_vaccination && (
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>{new Date(pet.lastVaccination).toLocaleDateString()}</span>
+              <span>{new Date(pet.last_vaccination).toLocaleDateString()}</span>
             </div>
           )}
         </div>

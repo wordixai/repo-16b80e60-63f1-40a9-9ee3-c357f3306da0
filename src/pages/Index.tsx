@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePetStore } from '@/store/petStore';
+import { useAuthStore } from '@/store/authStore';
 import { Pet, PetFormData } from '@/types/pet';
 import { PetCard } from '@/components/PetCard';
 import { PetDialog } from '@/components/PetDialog';
 import { Button } from '@/components/ui/button';
-import { Plus, PawPrint } from 'lucide-react';
+import { Plus, PawPrint, LogOut } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,16 +18,23 @@ import {
 } from '@/components/ui/alert-dialog';
 
 const Index = () => {
-  const { pets, addPet, updatePet, deletePet } = usePetStore();
+  const { pets, loading, fetchPets, addPet, updatePet, deletePet } = usePetStore();
+  const { user, signOut } = useAuthStore();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingPet, setEditingPet] = useState<Pet | null>(null);
   const [deletingPetId, setDeletingPetId] = useState<string | null>(null);
 
-  const handleSavePet = (petData: PetFormData) => {
+  useEffect(() => {
+    if (user) {
+      fetchPets();
+    }
+  }, [user, fetchPets]);
+
+  const handleSavePet = async (petData: PetFormData) => {
     if (editingPet) {
-      updatePet(editingPet.id, petData);
+      await updatePet(editingPet.id, petData);
     } else {
-      addPet(petData);
+      await addPet(petData);
     }
     setEditingPet(null);
   };
@@ -36,8 +44,8 @@ const Index = () => {
     setDialogOpen(true);
   };
 
-  const handleDeletePet = (id: string) => {
-    deletePet(id);
+  const handleDeletePet = async (id: string) => {
+    await deletePet(id);
     setDeletingPetId(null);
   };
 
@@ -60,14 +68,25 @@ const Index = () => {
                 <p className="text-muted-foreground">Manage your furry friends</p>
               </div>
             </div>
-            <Button onClick={handleAddNew} size="lg">
-              <Plus className="w-5 h-5 mr-2" />
-              Add Pet
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={handleAddNew} size="lg">
+                <Plus className="w-5 h-5 mr-2" />
+                Add Pet
+              </Button>
+              <Button variant="outline" size="lg" onClick={signOut}>
+                <LogOut className="w-5 h-5 mr-2" />
+                Sign Out
+              </Button>
+            </div>
           </div>
         </header>
 
-        {pets.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-20">
+            <div className="w-16 h-16 mx-auto mb-4 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-muted-foreground">Loading your pets...</p>
+          </div>
+        ) : pets.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-muted flex items-center justify-center text-5xl">
               🐾
